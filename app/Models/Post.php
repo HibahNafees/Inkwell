@@ -142,7 +142,7 @@ class Post extends Model
 
     public function coverUrl(): ?string
     {
-        return $this->cover_image ? Storage::disk('public')->url($this->cover_image) : null;
+        return $this->cover_image ? asset('storage/'.$this->cover_image) : null;
     }
 
     /**
