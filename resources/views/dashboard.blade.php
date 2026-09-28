@@ -17,7 +17,7 @@
     @else
         <div class="card table-card">
             <table>
-                <thead><tr><th>Title</th><th>Status</th><th>Comments</th><th>Updated</th><th></th></tr></thead>
+                <thead><tr><th>Title</th><th>Status</th><th>Likes</th><th>Comments</th><th>Updated</th><th></th></tr></thead>
                 <tbody>
                 @foreach ($posts as $post)
                     <tr>
@@ -29,6 +29,7 @@
                                 <span class="badge badge-draft">Draft</span>
                             @endif
                         </td>
+                        <td>{{ $post->likers_count }}</td>
                         <td>{{ $post->comments_count }}</td>
                         <td class="muted small">{{ $post->updated_at->diffForHumans() }}</td>
                         <td><a href="{{ route('posts.edit', $post) }}">Edit</a></td>

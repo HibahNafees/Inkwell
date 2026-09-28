@@ -20,5 +20,23 @@
 
             <div class="form-actions"><button class="btn btn-primary" type="submit">Save</button></div>
         </form>
+
+        <h2 class="section-title">Change password</h2>
+        <form method="POST" action="{{ route('password.update') }}" class="card form">
+            @csrf @method('PUT')
+
+            <label for="current_password">Current password</label>
+            <input id="current_password" name="current_password" type="password" required autocomplete="current-password">
+            @error('current_password', 'password') <p class="error">{{ $message }}</p> @enderror
+
+            <label for="new_password">New password</label>
+            <input id="new_password" name="password" type="password" required minlength="8" autocomplete="new-password">
+            @error('password', 'password') <p class="error">{{ $message }}</p> @enderror
+
+            <label for="new_password_confirmation">Confirm new password</label>
+            <input id="new_password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password">
+
+            <div class="form-actions"><button class="btn btn-primary" type="submit">Change password</button></div>
+        </form>
     </div>
 @endsection

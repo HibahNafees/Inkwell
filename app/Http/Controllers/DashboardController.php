@@ -13,7 +13,7 @@ class DashboardController extends Controller
     public function __invoke(Request $request): View
     {
         $posts = $request->user()->posts()
-            ->withCount('comments')
+            ->withCount(['comments', 'likers'])
             ->orderByRaw('published_at is null desc')
             ->latest('updated_at')
             ->get();

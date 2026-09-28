@@ -32,4 +32,12 @@ class PostPolicy
     {
         return $post->isPublished();
     }
+
+    /**
+     * Only published posts can be liked.
+     */
+    public function like(User $user, Post $post): bool
+    {
+        return $post->isPublished();
+    }
 }

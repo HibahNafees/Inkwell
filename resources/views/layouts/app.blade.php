@@ -3,11 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @isset($description)
+        <meta name="description" content="{{ $description }}">
+    @endisset
     <title>{{ isset($title) ? $title.' · ' : '' }}{{ config('app.name') }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=1">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=2">
 </head>
 <body>
     <header class="site-header">
@@ -18,6 +21,7 @@
                 @auth
                     <a href="{{ route('dashboard') }}">My posts</a>
                     <a href="{{ route('authors.show', auth()->user()) }}">My blog</a>
+                    <a href="{{ route('likes.index') }}">Liked</a>
                     <a href="{{ route('posts.create') }}" class="btn btn-primary btn-sm">Write</a>
                     <details class="menu">
                         <summary aria-label="Account menu">{{ \Illuminate\Support\Str::of(auth()->user()->name)->substr(0, 1)->upper() }}</summary>

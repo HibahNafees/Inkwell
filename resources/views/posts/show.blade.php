@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => $post->title])
+@extends('layouts.app', ['title' => $post->title, 'description' => $post->summary()])
 
 @section('content')
     <article class="post">
@@ -7,6 +7,9 @@
         @endunless
 
         <h1 class="post-title">{{ $post->title }}</h1>
+        @if ($post->excerpt)
+            <p class="post-subtitle muted">{{ $post->excerpt }}</p>
+        @endif
 
         <div class="post-meta">
             <a class="byline" href="{{ route('authors.show', $post->author) }}">
@@ -30,11 +33,31 @@
             @endcan
         </div>
 
-        <div class="prose">
-            @foreach (preg_split('/\R{2,}/', trim($post->body)) as $paragraph)
-                <p>{!! nl2br(e($paragraph)) !!}</p>
-            @endforeach
-        </div>
+        @if ($post->coverUrl())
+            <img class="post-cover" src="{{ $post->coverUrl() }}" alt="">
+        @endif
+
+        <div class="prose">{{ $post->renderedBody() }}</div>
+
+        @include('partials.tags', ['tags' => $post->tags])
+
+        @if ($post->isPublished())
+            <div class="engage" id="like">
+                @auth
+                    <form method="POST" action="{{ route('posts.like', $post) }}">
+                        @csrf
+                        <button type="submit" @class(['btn', 'like-btn', 'liked' => $liked]) aria-pressed="{{ $liked ? 'true' : 'false' }}">
+                            <span aria-hidden="true">{{ $liked ? '♥' : '♡' }}</span>
+                            {{ $liked ? 'Liked' : 'Like' }} · {{ $post->likers_count }}
+                        </button>
+                    </form>
+                @else
+                    <a class="btn like-btn" href="{{ route('login') }}"><span aria-hidden="true">♡</span> Like · {{ $post->likers_count }}</a>
+                @endauth
+                <a class="btn" href="#comments">💬 {{ $post->comments->count() }}</a>
+                <button type="button" class="btn push-right" data-share="{{ route('posts.show', $post) }}">Copy link</button>
+            </div>
+        @endif
     </article>
 
     @if ($post->isPublished())
@@ -77,5 +100,33 @@
                 @endforeach
             </ol>
         </section>
+
+        @if ($moreFromAuthor->isNotEmpty())
+            <section class="more">
+                <h2>More from {{ $post->author->name }}</h2>
+                <div class="stack">
+                    @foreach ($moreFromAuthor as $other)
+                        @include('partials.post-card', ['post' => $other, 'showAuthor' => false])
+                    @endforeach
+                </div>
+            </section>
+        @endif
     @endif
+
+    <script>
+        document.querySelectorAll('[data-share]').forEach((button) => {
+            button.addEventListener('click', async () => {
+                try {
+                    if (navigator.share) {
+                        await navigator.share({ title: document.title, url: button.dataset.share });
+                        return;
+                    }
+                    await navigator.clipboard.writeText(button.dataset.share);
+                    button.textContent = 'Link copied ✓';
+                } catch (error) {
+                    window.prompt('Copy this link:', button.dataset.share);
+                }
+            });
+        });
+    </script>
 @endsection

@@ -17,11 +17,13 @@ class AuthorController extends Controller
     {
         $posts = $user->posts()
             ->published()
-            ->withCount('comments')
+            ->forCards()
             ->latest('published_at')
             ->paginate(10);
 
-        return view('authors.show', ['author' => $user, 'posts' => $posts]);
+        $totalLikes = $user->posts()->published()->withCount('likers')->get()->sum('likers_count');
+
+        return view('authors.show', ['author' => $user, 'posts' => $posts, 'totalLikes' => $totalLikes]);
     }
 
     public function edit(Request $request): View

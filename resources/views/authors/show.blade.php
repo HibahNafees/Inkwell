@@ -6,6 +6,7 @@
         <div>
             <h1>{{ $author->name }}</h1>
             <p class="muted small">{{ '@'.$author->username }} · writing since {{ $author->created_at->format('M Y') }}</p>
+            <p class="small stats"><strong>{{ $posts->total() }}</strong> {{ \Illuminate\Support\Str::plural('post', $posts->total()) }} · <strong>{{ $totalLikes }}</strong> {{ \Illuminate\Support\Str::plural('like', $totalLikes) }}</p>
             @if ($author->bio)
                 <p>{{ $author->bio }}</p>
             @endif
