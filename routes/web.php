@@ -42,3 +42,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 Route::get('/@{user}', [AuthorController::class, 'show'])->name('authors.show');
+
+// CaseFile detective game: a standalone static page in public/.
+Route::get('/casefile', fn () => response()->file(public_path('casefile.html')))->name('casefile');
