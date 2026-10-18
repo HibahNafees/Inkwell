@@ -2,7 +2,7 @@
 
 A multi-author blog built with Laravel. People sign up, write posts in Markdown, save drafts or publish, and readers can comment, like and browse by tag or author.
 
-**Live:** https://66-135-1-187.sslip.io
+**Live:** https://hibah-inkwell.vercel.app (a Vercel rewrite in front of the server at https://66-135-1-187.sslip.io, which also still works)
 
 ## Features
 
